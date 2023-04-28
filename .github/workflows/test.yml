@@ -27,4 +27,4 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: release/*
-          INITIAL_VERSION: ${{ steps.splitBranchName.outputs._1 }}
+          CUSTOM_TAG: v${{ steps.splitBranchName.outputs._1 }}
