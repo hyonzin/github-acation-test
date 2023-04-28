@@ -1,0 +1,42 @@
+name: test
+
+on:
+  push:
+    branches:
+      - 'release/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: jungwinter/split@v1
+        id: splitBranchName
+        with:
+          msg: ${{ github.ref }}
+          seperator: '/'
+      - uses: mukunku/tag-exists-action@v1.0.0
+        id: checkTag
+        with:
+          tag: ${{ steps.splitBranchName.outputs._3 }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Bump version and push tag
+        id: bumpVersion
+        if: ${{ steps.checkTag.outputs.exists == 'true' }}
+        uses: anothrNick/github-tag-action@1.26.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: release/*
+      - name: Create Tag
+        if: ${{ steps.checkTag.outputs.exists == 'false' }}
+        uses: negz/create-tag@v1
+        with:
+          version: ${{ steps.splitBranchName.outputs._3 }}
+          token: ${{ secrets.GITHUB_TOKEN }}
