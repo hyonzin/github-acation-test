@@ -25,13 +25,10 @@ jobs:
           tag: ${{ steps.splitBranchName.outputs._3 }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set safe.directory
-        run: git config --global --add safe.directory /github/workspace
-        # run: mkdir -p /home/runner/work/_temp/_github_home && printf "[safe]\n\tdirectory = /github/workspace" > /home/runner/work/_temp/_github_home/.gitconfig
       - name: Bump version and push tag
         id: bumpVersion
         if: ${{ steps.checkTag.outputs.exists == 'true' }}
-        uses: anothrNick/github-tag-action@1.26.0
+        uses: anothrNick/github-tag-action@1.61.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
