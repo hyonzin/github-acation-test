@@ -19,14 +19,16 @@ jobs:
         with:
           msg: ${{ github.ref }}
           seperator: '/'
-
       - uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
         with:
           tag: ${{ steps.splitBranchName.outputs._3 }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Set new-minor-version
+        id: new-minor-version
+        if: ${{ steps.checkTag.outputs.exists == False }}
+        run: echo '::set-output name=NEW_VERSION::${{ steps.splitBranchName.outputs._3 }}'
       - name: Bump version and push tag
         id: bumpVersion
         uses: anothrNick/github-tag-action@1.61.0
@@ -35,4 +37,4 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: release/*
-          CUSTOM_TAG: ${{ !steps.checkTag.outputs.exists and steps.splitBranchName.outputs._3 }}
+          CUSTOM_TAG: ${{ steps.new-minor-version.outputs.NEW_VERSION }}
