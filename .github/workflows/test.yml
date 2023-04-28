@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set new-minor-version
         id: new-minor-version
-        if: ${{ steps.checkTag.outputs.exists == False }}
+        if: ${{ steps.checkTag.outputs.exists == false }}
         run: echo '::set-output name=NEW_VERSION::${{ steps.splitBranchName.outputs._3 }}'
       - name: Bump version and push tag
         id: bumpVersion
