@@ -25,6 +25,12 @@ jobs:
           tag: ${{ steps.splitBranchName.outputs._3 }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print isExists
+        run: echo '${{ steps.checkTag.outputs.exists }}'
+      - name: Print isExists2
+        run: echo '${{ steps.checkTag.outputs.exists == false }}'
+      - name: Print isExists3
+        run: echo '${{ ! steps.checkTag.outputs.exists }}'
       - name: Set new-minor-version
         id: new-minor-version
         if: ${{ steps.checkTag.outputs.exists == false }}
