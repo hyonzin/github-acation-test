@@ -14,14 +14,9 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: jungwinter/split@v1
-        id: splitBranchName
-        with:
-          msg: ${{ github.ref }}
-          seperator: '/'
       - name: Bump version and push tag
         id: bumpVersion
-        uses: anothrNick/github-tag-action@1.61.0
+        uses: hyonzin/github-tag-action@1.61.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
