@@ -25,19 +25,9 @@ jobs:
           tag: ${{ steps.splitBranchName.outputs._3 }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Print isExists
-        run: echo '${{ steps.checkTag.outputs.exists }}'
-      - name: Print isExists2
-        run: echo '${{ steps.checkTag.outputs.exists == false }}'
-      - name: Print isExists3
-        run: echo '${{ ! steps.checkTag.outputs.exists }}'
-      - name: Print isExists4
-        run: echo '${{ steps.checkTag.outputs.exists == 'false' }}'
-      - name: Print isExists5
-        run: echo '${{ steps.checkTag.outputs.exists == 'true' }}'
       - name: Set new-minor-version
         id: new-minor-version
-        if: ${{ steps.checkTag.outputs.exists == false }}
+        if: ${{ steps.checkTag.outputs.exists == 'false' }}
         run: echo '::set-output name=NEW_VERSION::${{ steps.splitBranchName.outputs._3 }}'
       - name: Bump version and push tag
         id: bumpVersion
